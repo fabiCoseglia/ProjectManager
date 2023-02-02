@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { clientAxios } from '../../config/clientAxios';
 import { AlertMsg } from '../components/AlertMsg';
 import { useForm } from '../hooks/useForm';
@@ -55,10 +55,11 @@ export const Register = () => {
 
       Swal.fire({
         position: 'center',
-        icon: 'success',
+        icon: 'info',
         title: 'Usuario Registrado',
+        text: 'Por favor, revise su email para confirmar su registro',
         showConfirmButton: false,
-        timer: 2700
+        timer: 3500
       })
 
       reset();
@@ -68,8 +69,7 @@ export const Register = () => {
       reset();
     }
     };
-
- 
+    
 
   const handleShowAlert = (msg) =>{
     setAlert({msg});

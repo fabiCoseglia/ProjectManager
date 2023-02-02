@@ -12,7 +12,7 @@ module.exports = {
             const {name,email,password} = req.body;
 
             if([name,email,password].includes("")){
-                throw createError(400,"Todos los campos son obligatorios");
+                throw createError(400,"All fields are required");
             };
 
             let user = await User.findOne({
@@ -20,7 +20,7 @@ module.exports = {
             });
 
             if(user){
-                throw createError(400,"El email ya se encuentra registrado");
+                throw createError(400,"This email is already registered");
             };
 
             const token=generatorToken();
@@ -40,7 +40,7 @@ module.exports = {
 
             return res.status(201).json({
                 ok : true,
-                msg :'Usuario Registrado',
+                msg :'Registered user',
                 user: userStore
             })
         } catch (error) {
@@ -55,16 +55,16 @@ module.exports = {
             const {email,password} = req.body;
 
             if([email,password].includes("")){
-                throw createError(400,"Todos los campos son obligatorios");
+                throw createError(400,"All fields are required");
             };
 
             let user = await User.findOne({email});
 
-            if (!user) throw createError(403, "Credenciales inválidas");
+            if (!user) throw createError(403, "invalid credentials");
 
-            if (!user.checked) throw createError(403, "Tu cuenta no ha sido confirmada");
+            if (!user.checked) throw createError(403, "Your account has not been confirmed");
 
-            if (!(await user.checkedPassword(password))) throw createError(403, "Credenciales inválidas");
+            if (!(await user.checkedPassword(password))) throw createError(403, "invalid credentials");
 
             
             return res.status(200).json({
@@ -90,13 +90,13 @@ module.exports = {
 
         try {
             if(!token) {
-                throw createError(400, "El Token no existe");}
+                throw createError(400, "The token doesn't exist");}
 
             let user = await User.findOne({
                 token
             });
             
-            if(!user) throw createError(400, "Token inválido");
+            if(!user) throw createError(400, "Invalid Token");
 
 
             user.checked = true;
@@ -106,7 +106,7 @@ module.exports = {
 
             return res.status(201).json({
                 ok : true,
-                msg :'Registro completado con éxito'
+                msg :'Registration completed successfully'
             });
 
         } catch (error) {
@@ -123,7 +123,7 @@ module.exports = {
                 email
             });
 
-            if(!user) throw createError(400,'El email no está registrado');
+            if(!user) throw createError(400,'The email is not registered');
 
             const token = generatorToken()
             user.token = token;
@@ -138,7 +138,7 @@ module.exports = {
 
             return res.status(200).json({
                 ok : true,
-                msg :'Token enviado al mail'
+                msg :'Token sent to the email'
             })
         } catch (error) {
             return errorResponse(res,error,'SEND-TOKEN');
@@ -148,15 +148,15 @@ module.exports = {
         try {
             const {token} = req.query;
             
-            if(!token) throw createError(400,'No hay token en la petición');
+            if(!token) throw createError(400,'There is no token in the request');
 
-            const user= await user.findOne({token});
+            const user= await User.findOne({token});
 
-            if(!user) throw createError(400,'Token inválido');
+            if(!user) throw createError(400,'Invalid Token');
 
             return res.status(200).json({
                 ok : true,
-                msg :'Token verificado'
+                msg :'Checked Token'
             })
         } catch (error) {
             return errorResponse(res,error,'VERIFY-TOKEN');
@@ -167,9 +167,11 @@ module.exports = {
             const {token}= req.query;
             const {password}= req.body;
 
-            if(!password) throw createError(400,'el Password es obligatorio');
+            if(!password) throw createError(400,'The password is required');
 
-            const user = user.findOne({token});
+            const user = await User.findOne({token});
+
+            if(!user) throw createError(400,'Invalid Token');
 
             user.password= password;
             user.token= "";
@@ -177,7 +179,7 @@ module.exports = {
 
             return res.status(200).json({
                 ok : true,
-                msg :'Password actualizado'
+                msg :'updated password'
             })
         } catch (error) {
             return errorResponse(res,error,'CHANGE-PASSWORD');
