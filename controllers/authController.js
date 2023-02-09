@@ -71,13 +71,13 @@ module.exports = {
                 ok : true,
                 msg :'Usuario Logueado',
                 user: {
-                    nombre: user.name,
-                    email: user.email,
-                    token: jsonWebTokenGenerator({
-                        id: user._id
-                    })
-                }
-            })
+                    name: user.name,
+                    _id: user._id,
+                },
+                token: jsonWebTokenGenerator({
+                    id: user._id
+                })
+            });
 
         } catch (error) {
             return errorResponse(res,error,'LOGIN');

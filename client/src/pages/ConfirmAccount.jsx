@@ -1,6 +1,6 @@
 import { useEffect,useState } from 'react';
 import { Link, useNavigate, useParams} from 'react-router-dom';
-import { clientAxios } from '../../config/clientAxios';
+import { clientAxios } from '../config/clientAxios';
 import Swal from 'sweetalert2';
 import { Alert } from 'react-bootstrap';
 import { AlertMsg } from '../components/AlertMsg';

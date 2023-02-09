@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Alert, Button, Form } from 'react-bootstrap'
 import {useNavigate, useParams} from 'react-router-dom'
 import Swal from 'sweetalert2';
-import { clientAxios } from '../../config/clientAxios';
+import { clientAxios } from '../config/clientAxios';
 import { AlertMsg } from '../components/AlertMsg';
 export const RecoverPassword = () => {
 

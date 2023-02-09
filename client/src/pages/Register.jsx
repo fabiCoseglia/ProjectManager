@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { clientAxios } from '../../config/clientAxios';
+import { clientAxios } from '../config/clientAxios';
 import { AlertMsg } from '../components/AlertMsg';
 import { useForm } from '../hooks/useForm';
 import Swal from 'sweetalert2';
@@ -81,17 +81,22 @@ export const Register = () => {
 
   return (
     <div>
-      <h1 className='text-info text-center mb-3 fw-bold' style={{fontSize:'32px'}}>Create Account</h1>
+      
       {
         alert.msg && <AlertMsg {...alert} />
       }
       <Form
       onSubmit={handleSubmit}
       noValidate
+      style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)',
+      border: '1px solid gray',
+      borderRadius: '10px',
+      padding: '20px'}}
       >
+      <h1 className='text-white text-center mb-3 fw-bold' style={{fontSize:'32px'}}>Create Account</h1>
       
       <Form.Group className="mb-3">
-        <Form.Label htmlFor='name'>Name</Form.Label>
+        <Form.Label htmlFor='name' className='text-white'>Name</Form.Label>
         <Form.Control 
         type="text" 
         placeholder="Enter name" 
@@ -102,7 +107,7 @@ export const Register = () => {
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label htmlFor='email'>Email address</Form.Label>
+        <Form.Label htmlFor='email'className='text-white'>Email address</Form.Label>
         <Form.Control 
         type="email" 
         placeholder="Enter email" 
@@ -113,7 +118,7 @@ export const Register = () => {
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label htmlFor='password'>Password</Form.Label>
+        <Form.Label htmlFor='password'className='text-white'>Password</Form.Label>
         <Form.Control 
         type="password" 
         placeholder="Password" 
@@ -124,7 +129,7 @@ export const Register = () => {
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label htmlFor='password2'>Confirm password</Form.Label>
+        <Form.Label htmlFor='password2'className='text-white'>Confirm password</Form.Label>
         <Form.Control 
         type="password" 
         placeholder="Password" 
@@ -135,20 +140,17 @@ export const Register = () => {
       </Form.Group>
 
       <Form.Group className='d-flex justify-content-end gap-2'>
-        <Link to={'/'}><Button variant="info" type="submit" className='text-white mt-2'>
+        <Link to={'/'}><Button variant="outline-light" type="submit" className='mt-2'>
           Cancel
         </Button></Link>
         <Button 
-        variant="info" 
+        variant="outline-light" 
         type="submit" 
-        className='text-white mt-2'
+        className='mt-2'
         disabled = {disable}
         >
           Sign in
         </Button>
-        </Form.Group>
-        <Form.Group className='d-flex justify-content-center mt-4'>
-          <Form.Text className=''><Link className='text-dark' to={'/forget-password'}>I forgot my password</Link></Form.Text>
         </Form.Group>
  
     </Form>

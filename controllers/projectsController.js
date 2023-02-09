@@ -1,10 +1,20 @@
+const createHttpError = require("http-errors");
+const Project = require("../database/models/Project");
+const errorResponse = require("../helpers/errorResponse");
+const ObjectId = require("mongoose").Types.ObjectId;
+
 module.exports = {
     list : async (req,res) => {
         try {
+
+            const projects = await Project.find().where('createdBy').equals(req.user).select('name client');
+
             return res.status(200).json({
                 ok : true,
-                msg :'Lista de Proyectos'
-            })
+                msg :'Lista de Proyectos',
+                projects: projects
+            });
+
         } catch (error) {
             console.log(error);
             return res.status(error.status || 500).json({
@@ -16,53 +26,94 @@ module.exports = {
     },
     store : async (req,res) => {
         try {
+
+            const {name,description,client} = req.body;
+
+            if([name,description,client].includes('')|| !name || !description || !client) throw createHttpError(400,'All fields are required');
+
+            if(!req.user) throw createHttpError(401,'auth error');
+
+            const project = new Project(req.body);
+            project.createdBy = req.user._id;
+            //console.log(project);
+            const projectStore = await project.save();
+
             return res.status(201).json({
                 ok : true,
-                msg :'Proyecto guardado'
+                msg :'Proyecto guardado',
+                project: projectStore
             })
         } catch (error) {
-            console.log(error);
-            return res.status(error.status || 500).json({
-                ok : false,
-                msg : error.message || 'Upss, hubo un error en STORE-PROJECT'
-            })
+           return errorResponse(res,error,'PROJECT-STORE');
         }
        
     },
     detail : async (req,res) => {
         try {
+            const {id} = req.params;
+            if(!ObjectId.isValid(id)) throw createHttpError(400, "Invalid ID");
+
+            const project = await Project.findById(id);
+
+            if(!project) throw createHttpError(404,'Project not found');
+            if(req.user._id.toString() !== project.createdBy.toString()) throw createHttpError(401,'Authorization Error');
+
             return res.status(200).json({
                 ok : true,
-                msg :'Detalle del Proyecto'
+                msg :'Detalle del Proyecto',
+                project
             })
         } catch (error) {
-            console.log(error);
-            return res.status(error.status || 500).json({
-                ok : false,
-                msg : error.message || 'Upss, hubo un error en PROJECT-DETAIL'
-            })
+            return errorResponse(res,error,'PROJECT-DETAIL');
         }
        
     },
     update : async (req,res) => {
         try {
+            const {id} = req.params;
+            if(!ObjectId.isValid(id)) throw createHttpError(400, "Invalid ID");
+
+            const project = await Project.findById(id);
+
+            if(!project) throw createHttpError(404,'Project not found');
+            if(req.user._id.toString() !== project.createdBy.toString()) throw createHttpError(401,'Authorization Error');
+
+           
+            const {name,description,client,dateExpire} = req.body;
+            if([name,description,client].includes('')|| !name || !description || !client) throw createHttpError(400,'All fields are required');
+
+            project.name = name || project.name;
+            project.description = description || project.description;
+            project.client = client || project.client;
+            project.dateExpire = dateExpire || project.dateExpire;
+
+            const projectUpdated = await project.save()
+
             return res.status(201).json({
                 ok : true,
-                msg :'Proyecto actualizado'
-            })
+                msg :'Uptadet project',
+                project: projectUpdated
+            });
+
         } catch (error) {
-            console.log(error);
-            return res.status(error.status || 500).json({
-                ok : false,
-                msg : error.message || 'Upss, hubo un error en PROJECT-UPDATE'
-            })
+            return errorResponse(res,error,'PROJECT-UPDATE');
         }
     },
     remove : async (req,res) => {
         try {
+            const {id} = req.params;
+            if(!ObjectId.isValid(id)) throw createHttpError(400, "Invalid ID");
+
+            const project = await Project.findById(id);
+
+            if(!project) throw createHttpError(404,'Project not found');
+            if(req.user._id.toString() !== project.createdBy.toString()) throw createHttpError(401,'Authorization Error');
+
+            await project.deleteOne();
+
             return res.status(200).json({
                 ok : true,
-                msg :'Proyecto eliminado'
+                msg :'Project removed'
             })
         } catch (error) {
             console.log(error);

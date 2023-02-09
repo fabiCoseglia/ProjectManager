@@ -2,7 +2,7 @@ import { useState} from 'react'
 import { Button, Form } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2';
-import { clientAxios } from '../../config/clientAxios';
+import { clientAxios } from '../config/clientAxios';
 import { AlertMsg } from '../components/AlertMsg';
 
 export const ForgetPassword = () => {
@@ -52,7 +52,7 @@ export const ForgetPassword = () => {
 
   return (
     <div>
-        <h1 className='text-info text-center mb-5 fw-bold' style={{fontSize:'32px'}}>Forgotten Password</h1>
+        
 
         {
           alert.msg && <AlertMsg {...alert} />
@@ -61,10 +61,15 @@ export const ForgetPassword = () => {
         <Form
         onSubmit={handleSubmit}
         noValidate
+        style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        border: '1px solid gray',
+        borderRadius: '10px',
+        padding: '20px'}}
         >
+          <h1 className='text-white text-center mb-3 fw-bold' style={{fontSize:'32px'}}>Forgotten Password</h1>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label htmlFor='email'>Email address</Form.Label>
+            <Form.Label htmlFor='email' className='text-white'>Email address</Form.Label>
             <Form.Control 
             type="email" 
             placeholder="Enter email" 
@@ -81,10 +86,10 @@ export const ForgetPassword = () => {
             <Form.Control type="password" placeholder="Password" name='password' id='password' />
           </Form.Group> */}
           <Form.Group className='d-flex justify-content-end gap-2'>
-        <Link to={'/'}><Button variant="info" type="submit" className='text-white mt-2'>
+        <Link to={'/'}><Button variant="outline-light" type="submit" className='mt-2'>
           Cancel
         </Button></Link>
-        <Button variant="info" type="submit" className='text-white mt-2'>
+        <Button variant="outline-light" type="submit" className='mt-2'>
           Recover Password
         </Button>
         </Form.Group>
