@@ -36,7 +36,6 @@ export const ProtectedLayout = () => {
           </Row>
           </Container>
           
-         {/*  <WaveFooter /> */}
         </Container>
       ) : (
         <Navigate to="/"></Navigate>

@@ -13,7 +13,7 @@ export const Projects = () => {
 
   return (
     <Container    
-    style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    style={{ backgroundColor: 'rgba(000, 000, 000, 0.7)',
     border: '1px solid gray',
     borderRadius: '10px',
     padding: '20px'}}

@@ -1,8 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { Col, Container, Navbar, Row } from "react-bootstrap";
-import { WaveHeader } from "../components/WaveHeader";
-import { WaveFooter } from "../components/WaveFooter";
 import backgroundImage from '../images/mountains.png'
 
 export const AuthLayout = () => {
