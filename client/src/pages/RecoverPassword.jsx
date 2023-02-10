@@ -94,9 +94,13 @@ export const RecoverPassword = () => {
         tokenChecked && (
         <Form
         onSubmit={handleSubmit}
+        style={{ backgroundColor: 'rgba(255, 255, 255, 0.2)',
+        border: '1px solid gray',
+        borderRadius: '10px',
+        padding: '20px'}}
         >
         <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label htmlFor='password'>Password</Form.Label>
+              <Form.Label htmlFor='password' className='text-white'>Password</Form.Label>
               <Form.Control 
               type="password" 
               placeholder="Password" 
@@ -107,7 +111,7 @@ export const RecoverPassword = () => {
               />
             </Form.Group>
 
-            <Button variant="info" type="submit" className='text-white mt-2'>
+            <Button variant="outline-light" type="submit" className='mt-2'>
           Change Password
         </Button>
         </Form>)
